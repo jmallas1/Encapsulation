@@ -29,54 +29,60 @@ public class Employee {
     private boolean movedIn;
     private String cubeId;
     private Date orientationDate;
+    private String fmtOrientationDate;
 
     public Employee(String firstName, String lastName, String ssn) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.ssn = ssn;
+        if (isValidName(firstName)) { setFirstName(firstName);}
+        if (isValidName(lastName)) { setLastName(lastName); }
+        if (isValidSSN(ssn)) { setSsn(ssn); }
+
+        firstDay();
+    }
+
+    private void firstDay() {
+        setOrientationDate(new Date());
+        meetWithHrForBenefitAndSalryInfo();
+        meetDepartmentStaff();
+        reviewDeptPolicies();
+        moveIntoCubicle(this.getCubeId());
     }
 
     // Assume this must be performed first, and assume that an employee
     // would only do this once, upon being hired.
-    public void meetWithHrForBenefitAndSalryInfo() {
-        metWithHr = true;
-        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
-        String fmtDate = sdf.format(orientationDate);        
+    private void meetWithHrForBenefitAndSalryInfo() {
+        setMetWithHr(true);
         System.out.println(firstName + " " + lastName + " met with Hr on "
-            + fmtDate);
+                + this.fmtOrientationDate);
     }
 
-    // Assume this must be performed first, and assume that an employee
+    // Assume this must be performed second, and assume that an employee
     // would only do this once, upon being hired.:
-    public void meetDepartmentStaff() {
-        metDeptStaff = true;
-        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
-        String fmtDate = sdf.format(orientationDate);        
+    private void meetDepartmentStaff() {
+        setMetDeptStaff(true);
         System.out.println(firstName + " " + lastName + " met with Dept. Staff on "
-            + fmtDate);
+                + this.fmtOrientationDate);
     }
 
     // Assume this must be performed third. And assume that because department
     // policies may change that this method may need to be called 
     // independently from other classes.
-    public void reviewDeptPolicies() {
-        reviewedDeptPolicies = true;
-        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
-        String fmtDate = sdf.format(orientationDate);        
+    private void reviewDeptPolicies() {
+        setReviewedDeptPolicies(true);
         System.out.println(firstName + " " + lastName + " reviewed Dept policies on "
-            + fmtDate);
+                + this.fmtOrientationDate);
     }
 
     // Assume this must be performed 4th. And assume that because employees
     // sometimes change office locations that this method may need to be called 
     // independently from other classes.
-    public void moveIntoCubicle(String cubeId) {
-        this.cubeId = cubeId;
-        this.movedIn = true;
-        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
-        String fmtDate = sdf.format(orientationDate);        
+    private void moveIntoCubicle(String cubeId) {
+        if (isValidCubeID(genOpenCubeId()))
+        {
+            setCubeId(genOpenCubeId());
+        }
+        setMovedIn(true);
         System.out.println(firstName + " " + lastName + " moved into cubicle "
-                + cubeId + " on " + fmtDate);
+                + cubeId + " on " + this.fmtOrientationDate);
     }
 
     public String getFirstName() {
@@ -85,24 +91,24 @@ public class Employee {
 
     // setter methods give the developer the power to control what data is
     // allowed through validation.
-    
-    public void setFirstName(String firstName) {
-       this.firstName = firstName;
+
+    private void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-       this.lastName = lastName;
+    private void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getSsn() {
         return ssn;
     }
 
-    public void setSsn(String ssn) {
+    private void setSsn(String ssn) {
         this.ssn = ssn;
     }
 
@@ -111,7 +117,7 @@ public class Employee {
     }
 
     // boolean parameters need no validation
-    public void setMetWithHr(boolean metWithHr) {
+    private void setMetWithHr(boolean metWithHr) {
         this.metWithHr = metWithHr;
     }
 
@@ -119,7 +125,7 @@ public class Employee {
         return metDeptStaff;
     }
 
-    public void setMetDeptStaff(boolean metDeptStaff) {
+    private void setMetDeptStaff(boolean metDeptStaff) {
         this.metDeptStaff = metDeptStaff;
     }
 
@@ -127,7 +133,7 @@ public class Employee {
         return reviewedDeptPolicies;
     }
 
-    public void setReviewedDeptPolicies(boolean reviewedDeptPolicies) {
+    private void setReviewedDeptPolicies(boolean reviewedDeptPolicies) {
         this.reviewedDeptPolicies = reviewedDeptPolicies;
     }
 
@@ -135,7 +141,7 @@ public class Employee {
         return movedIn;
     }
 
-    public void setMovedIn(boolean movedIn) {
+    private void setMovedIn(boolean movedIn) {
         this.movedIn = movedIn;
     }
 
@@ -143,8 +149,7 @@ public class Employee {
         return cubeId;
     }
 
-    
-    public void setCubeId(String cubeId) {
+    private void setCubeId(String cubeId) {
         this.cubeId = cubeId;
     }
 
@@ -152,6 +157,30 @@ public class Employee {
         return orientationDate;
     }
 
-    public void setOrientationDate(Date orientationDate) {
+    private void setOrientationDate(Date orientationDate) {
         this.orientationDate = orientationDate;
-    }}
+        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
+        this.fmtOrientationDate = sdf.format(orientationDate);
+    }
+
+    // validation methods
+    private boolean isValidName(String name)
+    {
+        return true;
+    }
+
+    private boolean isValidSSN(String ssn)
+    {
+        return true;
+    }
+
+    private boolean isValidCubeID(String cubeId)
+    {
+        return true;
+    }
+
+    private String genOpenCubeId()
+    {
+        return "1234";
+    }
+}
